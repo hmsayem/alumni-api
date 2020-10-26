@@ -39,7 +39,7 @@ python manage.py runserver
 
 ### API Endpoints
 You can call any of the service URL directly from a client browser. It will return a JSON formatted results.
-> #####Authentication
+> <strong> Authentication </strong>
 ```
 "/api/account/register/" 
 ```
@@ -49,7 +49,7 @@ You can call any of the service URL directly from a client browser. It will retu
 ```
 `POST` Login.
 
-> #####Settings
+> <strong> Settings </strong>
 
 ```
 "/api/account/user/"
@@ -60,7 +60,7 @@ You can call any of the service URL directly from a client browser. It will retu
 ```
 `PUT` Update Settings. 
 
-> #####Profile 
+> <strong> Profile </strong>
 
 ```
 "/api/account/profile/"
@@ -100,7 +100,7 @@ You can call any of the service URL directly from a client browser. It will retu
 `DELETE` Delete Social links.
  
 
-> #####Blog
+> <strong> Blog </strong>
 ```
 "/api/blog/post/"
 ```
