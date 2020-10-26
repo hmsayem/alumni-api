@@ -2,7 +2,7 @@ from django.urls import path, include
 from knox import views as knox_views
 from rest_framework.routers import DefaultRouter
 from account.api.views import (
-
+    UserViewSet,
     ProfileViewSet,
     JobViewSet,
     SocialViewSet,
@@ -11,6 +11,9 @@ from account.api.views import (
 )
 
 app_name = 'account'
+
+user_router = DefaultRouter()
+user_router.register('user', UserViewSet, basename='user')
 
 profile_router = DefaultRouter()
 profile_router.register('profile', ProfileViewSet, basename='profile')
@@ -23,6 +26,8 @@ social_router.register('social', SocialViewSet, basename='social')
 
 urlpatterns = [
 
+    path('', include(user_router.urls)),
+    path('<int:user>', include(user_router.urls)),
     path('', include(profile_router.urls)),
     path('<int:user>', include(profile_router.urls)),
     path('', include(job_router.urls)),

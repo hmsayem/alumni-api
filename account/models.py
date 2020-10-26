@@ -34,6 +34,7 @@ DEPARTMENT_CHOICES = [
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    about = models.TextField(blank=True, null=True)
     image = models.ImageField(null=True, blank=True, upload_to='images/')
     faculty = models.CharField(choices=FACULTY_CHOICES, max_length=200)
     department = models.CharField(choices=DEPARTMENT_CHOICES, max_length=200)

@@ -16,7 +16,7 @@ urlpatterns = [
 
     path('', include(blog_router.urls)),
     path('<int:user>', include(blog_router.urls)),
-    path('post/like/<int:pk>/', blog_like_view, name='like_post'),
+    path('like/<int:pk>/', blog_like_view, name='like_post'),
     path('comment/<int:pk>/', comment_list_view, name='comments'),
     path('comment/create', CreateCommentView.as_view(), name='comment_create'),
 ]

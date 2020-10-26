@@ -1,19 +1,26 @@
-from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework import status, viewsets
-from django.shortcuts import render
-from django.http import HttpResponse
+from rest_framework import status, viewsets,generics,mixins
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from .serializers import ProfileSerializer, SocialSerializer, JobSerializer, RegisterSerializer
 from account.models import Profile, Social, Job
-from django.contrib.auth.models import User
-from rest_framework import generics, permissions
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.contrib.auth.models import User
 from knox.models import AuthToken
-from .serializers import UserSerializer, RegisterSerializer
 from django.contrib.auth import login
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
+
+from .serializers import (
+    UserSerializer,
+    RegisterSerializer,
+    ViewProfileSerializer,
+    CreateProfileSerializer,
+    UpdateProfileSerializer,
+    ViewSocialSerializer,
+    CreateSocialSerializer,
+    UpdateSocialSerializer,
+    ViewJobSerializer,
+    CreateJobSerializer,
+    UpdateJobSerializer,
+)
 
 
 class LoginAPI(KnoxLoginView):
@@ -44,17 +51,45 @@ class RegisterAPI(generics.GenericAPIView):
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
-    serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
+    serializer_class = ViewProfileSerializer
     lookup_field = 'user'
     permission_classes = [IsAuthenticated]
+    action_serializers = {
+        'create': CreateProfileSerializer,
+        'update': UpdateProfileSerializer,
+    }
     permission_classes_by_action = {
         'list': [AllowAny],
-        'create': [IsAuthenticated],
+        'create': [AllowAny],
         'retrieve': [AllowAny],
-        'update': [IsAuthenticated],
-
+        'update': [AllowAny],
+        'destroy': [AllowAny],
     }
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        profile = self.get_object()
+        if profile.user.id != request.user.id:
+            return Response({"detail": "Not allowed"})
+        serializer = self.get_serializer(profile, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        profile = self.get_object()
+        if profile.user.id != request.user.id:
+            return Response({"detail": "Not allowed"})
+        self.perform_destroy(profile)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def get_serializer_class(self):
+        if hasattr(self, 'action_serializers'):
+            return self.action_serializers.get(self.action, self.serializer_class)
+        return super(ViewProfileSerializer, self).get_serializer_class()
 
     def get_permissions(self):
         try:
@@ -65,13 +100,136 @@ class ProfileViewSet(viewsets.ModelViewSet):
             return [permission() for permission in self.permission_classes]
 
 
-class JobViewSet(viewsets.ModelViewSet):
-    serializer_class = JobSerializer
-    queryset = Job.objects.all()
-    lookup_field = 'user'
-
-
 class SocialViewSet(viewsets.ModelViewSet):
-    serializer_class = SocialSerializer
     queryset = Social.objects.all()
+    serializer_class = ViewSocialSerializer
     lookup_field = 'user'
+    permission_classes = [IsAuthenticated]
+    action_serializers = {
+        'create': CreateSocialSerializer,
+        'update': UpdateSocialSerializer,
+    }
+    permission_classes_by_action = {
+        'list': [AllowAny],
+        'create': [AllowAny],
+        'retrieve': [AllowAny],
+        'update': [AllowAny],
+        'destroy': [AllowAny],
+    }
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        social = self.get_object()
+        if social.user.id != request.user.id:
+            return Response({"detail": "Not allowed"})
+        serializer = self.get_serializer(social, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        social = self.get_object()
+        if social.user.id != request.user.id:
+            return Response({"detail": "Not allowed"})
+        self.perform_destroy(social)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def get_serializer_class(self):
+        if hasattr(self, 'action_serializers'):
+            return self.action_serializers.get(self.action, self.serializer_class)
+        return super(ViewSocialSerializer, self).get_serializer_class()
+
+    def get_permissions(self):
+        try:
+            return [permission() for permission in self.permission_classes_by_action[self.action]]
+        except KeyError:
+            return [permission() for permission in self.permission_classes]
+
+
+class JobViewSet(viewsets.ModelViewSet):
+    queryset = Job.objects.all()
+    serializer_class = ViewJobSerializer
+    lookup_field = 'user'
+    permission_classes = [IsAuthenticated]
+    action_serializers = {
+        'create': CreateJobSerializer,
+        'update': UpdateJobSerializer,
+    }
+    permission_classes_by_action = {
+        'list': [AllowAny],
+        'create': [AllowAny],
+        'retrieve': [AllowAny],
+        'update': [AllowAny],
+        'destroy': [AllowAny],
+    }
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        job = self.get_object()
+        if job.user.id != request.user.id:
+            return Response({"detail": "Not allowed"})
+        serializer = self.get_serializer(job, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        job = self.get_object()
+        if job.user.id != request.user.id:
+            return Response({"detail": "Not allowed"})
+        self.perform_destroy(job)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def get_serializer_class(self):
+        if hasattr(self, 'action_serializers'):
+            return self.action_serializers.get(self.action, self.serializer_class)
+        return super(ViewJobSerializer, self).get_serializer_class()
+
+    def get_permissions(self):
+        try:
+            return [permission() for permission in self.permission_classes_by_action[self.action]]
+        except KeyError:
+            return [permission() for permission in self.permission_classes]
+
+
+class UserViewSet(mixins.ListModelMixin,
+                  mixins.RetrieveModelMixin,
+                  mixins.UpdateModelMixin,
+                  mixins.DestroyModelMixin,
+                  viewsets.GenericViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    permission_classes_by_action = {
+        'list': [AllowAny],
+        'retrieve': [AllowAny],
+        'update': [AllowAny],
+        'destroy': [AllowAny],
+    }
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.id != request.user.id:
+            return Response({"detail": "Not allowed"})
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.id != request.user.id:
+            return Response({"detail": "Not allowed"})
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def get_permissions(self):
+        try:
+            return [permission() for permission in self.permission_classes_by_action[self.action]]
+        except KeyError:
+            return [permission() for permission in self.permission_classes]

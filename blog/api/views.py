@@ -1,6 +1,5 @@
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import status, viewsets
-from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -27,17 +26,36 @@ class BlogViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     permission_classes_by_action = {
         'list': [AllowAny],
-        'create': [IsAuthenticated],
+        'create': [AllowAny],
         'retrieve': [AllowAny],
-        'update': [IsAuthenticated],
-
+        'update': [AllowAny],
+        'destroy': [AllowAny],
     }
+
+    def update(self, request, *args, **kwargs):
+        blog = self.get_object()
+        if blog.author.id != request.user.id:
+            return Response({"detail": "Not allowed"})
+        serializer = self.get_serializer(blog, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        blog = self.get_object()
+        blog = self.get_object()
+        if blog.author.id != request.user.id:
+            return Response({"detail": "Not allowed"})
+        self.perform_destroy(blog)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get_serializer_class(self):
         if hasattr(self, 'action_serializers'):
             return self.action_serializers.get(self.action, self.serializer_class)
-
         return super(ViewPostSerializer, self).get_serializer_class()
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
     def get_permissions(self):
         try:
@@ -50,7 +68,7 @@ class BlogViewSet(viewsets.ModelViewSet):
 
 @api_view(['GET', ])
 def blog_like_view(request, pk):
-    if request.user.id == None:
+    if request.user.id is None:
         return Response({"detail": "Authentication credentials were not provided."})
     post = Post.objects.get(id=pk)
 
@@ -62,7 +80,6 @@ def blog_like_view(request, pk):
 
 
 @api_view(['GET', ])
-# @permission_classes([IsAuthenticated])
 def comment_list_view(request, pk):
     post = Post.objects.get(id=pk)
     comments = post.comments.all()
@@ -72,4 +89,7 @@ def comment_list_view(request, pk):
 
 class CreateCommentView(CreateAPIView):
     serializer_class = CreateCommentSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

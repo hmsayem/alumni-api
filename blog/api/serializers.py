@@ -9,14 +9,18 @@ class ViewPostSerializer(serializers.ModelSerializer):
 
 
 class CreatePostSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Post
-        fields = ['title', 'author', 'header_image', 'category', 'body']
+        fields = ['id', 'date', 'author', 'title', 'header_image', 'category', 'body']
+        extra_kwargs = {'author': {'required': False}}
+
 
 class UpdatePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ['title', 'header_image', 'category', 'body']
+        fields = ['id', 'date', 'author', 'title', 'header_image', 'category', 'body']
+        read_only_fields = ['author']
 
 
 class ViewCommentSerializer(serializers.ModelSerializer):
@@ -28,4 +32,6 @@ class ViewCommentSerializer(serializers.ModelSerializer):
 class CreateCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['post', 'user', 'body']
+        fields = ['post', 'user', 'body', 'timestamp']
+        extra_kwargs = {'user': {'required': False}}
+
