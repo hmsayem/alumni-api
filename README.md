@@ -1,19 +1,19 @@
 # RESTFUL API for BUP Alumni Website
 ### About
 A website for the alumnus of Bangladesh University of Professionals (BUP).
-
+[Click here](http://bup.pythonanywhere.com/) to view a live version of the website. <br> <br>
 [![Python](https://img.shields.io/badge/Python-3.8-critical)]()
 [![Django](https://img.shields.io/badge/Django-3.1-green)]()
 [![Django](https://img.shields.io/badge/DRF-3.12-yellowgreen)]()
 
 ### Features
 
--[x] Blog
--[x] Batch and Faculty wise student database
--[x] Personal profile for each Alumni
--[x] Job Portal
--[x] Career counselling sessions
--[x] Mentoring
+- Blog
+- Batch and Faculty wise student database
+- Personal profile for each Alumni
+- Job Portal
+- Career counselling sessions
+- Mentoring
 
 
 ### How to set up
@@ -39,7 +39,7 @@ python manage.py runserver
 
 ### API Endpoints
 You can call any of the service URL directly from a client browser. It will return a JSON formatted results.
-> Authentication
+> #####Authentication
 ```
 "/api/account/register/" 
 ```
@@ -49,15 +49,18 @@ You can call any of the service URL directly from a client browser. It will retu
 ```
 `POST` Login.
 
-> Settings
+> #####Settings
 
 ```
 "/api/account/user/"
 ```
-`GET`  Returns Users. <br> 
+`GET`  Returns Users. 
+```
+"/api/account/user/user_id"
+```
 `PUT` Update Settings. 
 
-> Profile 
+> #####Profile 
 
 ```
 "/api/account/profile/"
@@ -97,7 +100,7 @@ You can call any of the service URL directly from a client browser. It will retu
 `DELETE` Delete Social links.
  
 
-> Blog
+> #####Blog
 ```
 "/api/blog/post/"
 ```
