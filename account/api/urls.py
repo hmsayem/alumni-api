@@ -12,28 +12,18 @@ from account.api.views import (
 
 app_name = 'account'
 
-user_router = DefaultRouter()
-user_router.register('user', UserViewSet, basename='user')
-
-profile_router = DefaultRouter()
-profile_router.register('profile', ProfileViewSet, basename='profile')
-
-job_router = DefaultRouter()
-job_router.register('job', JobViewSet, basename='job')
-
-social_router = DefaultRouter()
-social_router.register('social', SocialViewSet, basename='social')
+account_router = DefaultRouter()
+account_router.register('user', UserViewSet, basename='user')
+account_router.register('profile', ProfileViewSet, basename='profile')
+account_router.register('job', JobViewSet, basename='job')
+account_router.register('social', SocialViewSet, basename='social')
 
 urlpatterns = [
 
-    path('', include(user_router.urls)),
-    path('<int:user>', include(user_router.urls)),
-    path('', include(profile_router.urls)),
-    path('<int:user>', include(profile_router.urls)),
-    path('', include(job_router.urls)),
-    path('<int:user>', include(job_router.urls)),
-    path('', include(social_router.urls)),
-    path('<int:user>', include(social_router.urls)),
+    path('', include(account_router.urls)),
+    path('<int:user>', include(account_router.urls)),
+    path('', include(account_router.urls)),
+    path('<int:user>', include(account_router.urls)),
     path('register', RegisterAPI.as_view(), name='register'),
     path('login/', LoginAPI.as_view(), name='login'),
     path('logout/', knox_views.LogoutView.as_view(), name='logout'),
