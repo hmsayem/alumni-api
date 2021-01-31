@@ -66,7 +66,7 @@ class BlogViewSet(viewsets.ModelViewSet):
             return [permission() for permission in self.permission_classes]
 
 
-@api_view(['GET', ])
+@api_view(['PUT', ])
 def blog_like_view(request, pk):
     if request.user.id is None:
         return Response({"detail": "Authentication credentials were not provided."})
