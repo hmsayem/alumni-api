@@ -1,20 +1,9 @@
-# RESTFUL API for BUP Alumni Website
-### About
-A website for the alumnus of Bangladesh University of Professionals (BUP).
-[Click here](http://bup.pythonanywhere.com/) to view a live version of the website. <br> <br>
+# Alumni API Server
+REST API server built with Django REST framework that allows users to register, login, create/update/delete profile, update settings, create/update/delete/like/unlike blog posts.
+
 [![Python](https://img.shields.io/badge/Python-3.8-critical)]()
 [![Django](https://img.shields.io/badge/Django-3.1-green)]()
 [![Django](https://img.shields.io/badge/DRF-3.12-yellowgreen)]()
-
-### Features
-
-- Blog
-- Batch and Faculty wise student database
-- Personal profile for each Alumni
-- Job Portal
-- Career counselling sessions
-- Mentoring
-
 
 ### How to set up
 ##### Clone project & Install Requirements
@@ -127,4 +116,4 @@ You can call any of the service URL directly from a client browser. It will retu
 ```
 "/api/blog/like/blog_id"
 ```
-`GET` Like / Unlike post.
+`PUT` Like / Unlike post.
