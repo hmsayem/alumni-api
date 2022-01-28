@@ -1,5 +1,5 @@
-# Alumni API Server
-REST API server built with Django REST framework that allows users to register, login, create/update/delete profile, update settings, create/update/delete/like/unlike blog posts.
+# Blog API Server
+A REST API server built with Django REST framework that allows users to register, login, create/update/delete profile, update settings, create/update/delete/like/unlike blog posts.
 
 [![Python](https://img.shields.io/badge/Python-3.8-critical)]()
 [![Django](https://img.shields.io/badge/Django-3.1-green)]()
