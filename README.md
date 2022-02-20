@@ -1,5 +1,10 @@
-# Blog API Server
-A REST API server built with Django REST framework that allows users to register, login, create/update/delete profile, update settings, create/update/delete/like/unlike blog posts.
+# Alumni REST API Server 
+A REST API server built with Django REST framework for the Alumni of Bangladesh University of Professionals that allow its users to:
+
+- [x] Register & Login
+- [x] Create/Update/Delete profile
+- [x] Update settings
+- [x] Create/Update/Delete/Like/Unlike blog posts
 
 [![Python](https://img.shields.io/badge/Python-3.8-critical)]()
 [![Django](https://img.shields.io/badge/Django-3.1-green)]()
@@ -9,7 +14,7 @@ A REST API server built with Django REST framework that allows users to register
 ##### Clone project & Install Requirements
 > Make sure you have already installed python3 and git.
 ```
-git clone https://github.com/hmsayem/BUP-Alumni.git && cd BUP-Alumni
+git clone https://github.com/hmsayem/alumni-api.git && cd alumni-api
 pip install -r requirements.txt
 ```
 ##### Migrate
@@ -26,94 +31,288 @@ python manage.py runserver
 ```
 >  The blog should be available at `localhost:8000`. You can login as an admin at `http://localhost:8000/admin`.
 
-### API Endpoints
-You can call any of the service URL directly from a client browser. It will return a JSON formatted results.
-> <strong> Authentication </strong>
-```
-"/api/account/register/" 
-```
-`POST` Register.
-```
-"/api/account/login/" 
-```
-`POST` Login.
+### API Reference
 
-> <strong> Settings </strong>
+#### Register
+```http
+
+POST /api/account/register/
 
 ```
-"/api/account/user/"
-```
-`GET`  Returns Users. 
-```
-"/api/account/user/user_id"
-```
-`PUT` Update Settings. 
-
-> <strong> Profile </strong>
-
-```
-"/api/account/profile/"
-```
-`GET`  Returns Profiles. <br> 
-`POST` Create Profile. 
+Request Body:
+```json
+{
+    "first_name": "Hossain",
+    "last_name": "Mahmud",
+    "username": "hmsayem",
+    "email": "hmsayem@gmail.com",
+    "password": "changeit"
+}
 
 ```
-"/api/account/profile/user_id/"
-```
-`GET`  Returns Profile.<br> 
-`PUT` Update Profile.<br>
-`DELETE` Delete Profile.
+#### Login
+```http
+
+POST /api/account/login/
 
 ```
-"/api/account/job/"
+Request Body:
+```json
+{
+    "username": "hmsayem",
+    "password": "changeit"
+}
 ```
-`GET`  Returns Job descriptions. <br> 
-`POST` Add job description.
+> Login reqeust returns a token and an expiry as a json response. The token should be set as the authorization header. 
+
+#### Get all users
+```http
+
+GET /api/account/user/
 
 ```
-"/api/account/job/user_id/"
-```
-`GET`  Returns Job description.<br> 
-`PUT` Update Job description. <br>
-`DELETE` Delete Job description.
- 
-```
-"/api/account/social/"
-```
-`POST` Add Social links.
-```
-"/api/account/social/user_id/"
-```
-`GET`  Returns Social links.<br> 
-`PUT` Update Social links. <br>
-`DELETE` Delete Social links.
- 
+#### Get user
+```http
 
-> <strong> Blog </strong>
-```
-"/api/blog/post/"
-```
-`GET` Returns Blog Posts. <br>
-`POST` Create Blog Post.
-```
-"/api/blog/post/blog_id/"
-```
-`GET` Returns Blog post. <br>
-`PUT` Update Blog Post. <br>
-`DELETE` Delete Blog Post.
+GET /api/account/user/${user_id}/
 
 ```
-"/api/blog/comment/blog_id/"
-```
-`GET` Returns comments.
+#### Update user
+```http
+
+PUT /api/account/user/${user_id}/
 
 ```
-"/api/blog/comment/create/"
+Request Body:
+```json
+{
+    "username": "sayem",
+    "email": "sayem@gmail.com"
+}
+```
+> The request will update the username and email of the specified user. Server will deny the request if the specified user is not same as the logged in user.
+
+##### Get profiles of all users
+```http
+
+GET /api/account/profile/
+
+```
+##### Create profile for a user
+```http
+
+POST /api/account/profile/
+
+```
+Request Body:
+```json
+{
+    "about": "Passionate about implementing new projects",
+    "faculty": "FST",
+    "department": "ICT",
+    "roll": 17511058,
+    "batch": 2017,
+    "passing_year": 2021
+}
+```
+> The request will create the above profile for the logged in user.
+
+##### Get profile of a user
+```http
+
+GET /api/account/profile/${user_id}/
+
+```
+##### Update profile of a user
+```http
+
+PUT /api/account/profile/${user_id}/
+
+```
+Request Body:
+```json
+{
+    "roll": 17511060,
+    "batch": 2018
+}
+```
+> The request will update the roll and batch of the specified user. Server will deny the request if the specified user is not same as the logged in user.
+
+##### Delete profile of a user
+```http
+
+DELETE /api/account/profile/${user_id}/
+
+```
+> Server will deny the request if the specified user is not same as the logged in user.
+
+##### Get job descriptions of all users
+```http
+
+GET /api/account/job/
+
+```
+##### Create job description for a user
+```http
+
+POST /api/account/job/
+
+```
+Request Body:
+```json
+{
+    "title": "Software Engineer",
+    "company": "AppsCode Inc.",
+    "start_date": "2021-03-01"
+}
+```
+> The request will create the above job description for the logged in user.
+##### Get job description of a user
+```http
+
+GET /api/account/job/${user_id}/
+
+```
+##### Update job description of a user
+```http
+
+PUT /api/account/job/${user_id}/
+
+```
+Request Body:
+```json
+{
+    "start_date": "2021-04-01"
+}
+```
+> The request will update the start_date of the specified user. Server will deny the request if the specified user is not same as the logged in user.
+
+##### Delete job description of a user
+```http
+
+DELETE /api/account/job/${user_id}/
+
+```
+> Server will deny the request if the specified user is not same as the logged in user.
+
+##### Get Social links of all users
+```http
+
+GET /api/account/social/
+
 ```
 
-`POST` Create Comment.
+##### Create Social links for a user
+```http
+
+POST /api/account/social/
 
 ```
-"/api/blog/like/blog_id"
+Request Body:
+```json
+{    
+    "facebook": "https://www.facebook.com/hm.sayem",
+    "linkedin": "https://www.linkedin.com/in/hmsayem",
+    "github": "https://github.com/hmsayem"
+}
 ```
-`PUT` Like / Unlike post.
+> The request will create the above social links for the logged in user.
+
+
+##### Get Social links of a user
+```http
+
+GET /api/account/social/${user_id}/
+
+```
+##### Update Social links of a user
+```http
+
+PUT /api/account/social/${user_id}/
+
+```
+Request Body:
+```json
+{
+    "facebook": "https://www.facebook.com/sayem",
+    "linkedin": "https://www.linkedin.com/in/sayem",
+}
+```
+> The request will update the facebook and linked in links of the specified user. Server will deny the request if the specified user is not same as the logged in user.
+
+##### Delete Social links of a user
+```http
+
+DELETE /api/account/social/${user_id}/
+
+```
+> Server will deny the request if the specified user is not same as the logged in user.
+
+##### Get all blog posts
+```http
+
+GET /api/blog/post/
+
+```
+##### Create blog post
+```http
+
+POST /api/blog/post/
+
+```
+Request Body:
+```json
+{
+    "title": "Blog Post 1",
+    "body": "<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using<strong> Lorem Ipsum</strong> is that it has a more-or-less normal distribution of letters, as opposed to using &#39;Content here, content here&#39;, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for &#39;lorem ipsum&#39; will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>",
+    "category": "Dynamic Programming"
+}
+```
+> The request will create the above blog post. Server will set the logged in user as the author of this blog post.
+##### Get blog post
+```http
+
+GET /api/blog/post/${blog_id}/
+
+```
+##### Update blog post
+```http
+
+PUT /api/blog/post/${blog_id}/
+
+```
+Request Body:
+```json
+{
+    "title": "Blog Post 2"
+}
+```
+> The request will update the title of the specified blog post. Server will deny the request if the author of the blog post is not same as the logged in user.
+##### Delete blog post
+```http
+
+DELETE /api/blog/post/${blog_id}/
+
+```
+> Server will deny the request if the author of the blog post is not same as the logged in user.
+
+##### Like/Unlike blog post
+```http
+
+PUT /api/blog/like/${blog_id}/
+
+```
+> The request will add a like to the specified blog post. If the post is already liked by the logged in user, the request will remove the like from it. 
+
+##### Get blog comments
+```http
+
+GET /api/blog/comment/${blog_id}/
+
+```
+##### Create blog comment
+```http
+
+POST /api/blog/comment/create/
+
+```

@@ -47,7 +47,7 @@ class Profile(models.Model):
 
 
 class Job(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     company = models.CharField(max_length=200)
     start_date = models.DateField()

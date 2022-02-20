@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'email')
-
+        extra_kwargs = {'username': {'required': False}}
 
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
@@ -49,6 +49,7 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ('user', 'image', 'about', 'faculty', 'department', 'roll', 'batch', 'passing_year', 'resume')
+        extra_kwargs = {'faculty': {'required': False}, 'department': {'required': False}, 'passing_year': {'required': False},}
         read_only_fields = ['user']
 
 
@@ -89,4 +90,5 @@ class UpdateJobSerializer(serializers.ModelSerializer):
     class Meta:
         model = Job
         fields = ('user', 'title', 'company', 'start_date', 'end_date')
+        extra_kwargs = {'title': {'required': False}, 'company': {'required': False}, 'start_date': {'required': False},}
         read_only_fields = ['user']

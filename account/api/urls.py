@@ -19,12 +19,9 @@ account_router.register('job', JobViewSet, basename='job')
 account_router.register('social', SocialViewSet, basename='social')
 
 urlpatterns = [
-
     path('', include(account_router.urls)),
     path('<int:user>', include(account_router.urls)),
-    path('', include(account_router.urls)),
-    path('<int:user>', include(account_router.urls)),
-    path('register', RegisterAPI.as_view(), name='register'),
+    path('register/', RegisterAPI.as_view(), name='register'),
     path('login/', LoginAPI.as_view(), name='login'),
     path('logout/', knox_views.LogoutView.as_view(), name='logout'),
     path('logoutall/', knox_views.LogoutAllView.as_view(), name='logoutall'),

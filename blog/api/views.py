@@ -43,7 +43,6 @@ class BlogViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         blog = self.get_object()
-        blog = self.get_object()
         if blog.author.id != request.user.id:
             return Response({"detail": "Not allowed"})
         self.perform_destroy(blog)
@@ -90,6 +89,5 @@ def comment_list_view(request, pk):
 class CreateCommentView(CreateAPIView):
     serializer_class = CreateCommentSerializer
     permission_classes = [AllowAny]
-
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
