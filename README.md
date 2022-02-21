@@ -303,16 +303,3 @@ PUT /api/blog/like/${blog_id}/
 
 ```
 > The request will add a like to the specified blog post. If the post is already liked by the logged in user, the request will remove the like from it. 
-
-##### Get blog comments
-```http
-
-GET /api/blog/comment/${blog_id}/
-
-```
-##### Create blog comment
-```http
-
-POST /api/blog/comment/create/
-
-```

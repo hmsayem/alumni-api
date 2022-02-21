@@ -9,9 +9,6 @@ from blog.api.serializers import (
     ViewPostSerializer,
     CreatePostSerializer,
     UpdatePostSerializer,
-    ViewCommentSerializer,
-    CreateCommentSerializer,
-
 )
 
 
@@ -76,18 +73,3 @@ def blog_like_view(request, pk):
     else:
         post.likes.add(request.user)
     return HttpResponse(status=status.HTTP_204_NO_CONTENT)
-
-
-@api_view(['GET', ])
-def comment_list_view(request, pk):
-    post = Post.objects.get(id=pk)
-    comments = post.comments.all()
-    serializer = ViewCommentSerializer(comments, many=True)
-    return Response(serializer.data)
-
-
-class CreateCommentView(CreateAPIView):
-    serializer_class = CreateCommentSerializer
-    permission_classes = [AllowAny]
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)

@@ -27,11 +27,3 @@ class ViewCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['post', 'user', 'body', 'timestamp']
-
-
-class CreateCommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = ['post', 'user', 'body', 'timestamp']
-        extra_kwargs = {'user': {'required': False}}
-
