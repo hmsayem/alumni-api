@@ -1,5 +1,5 @@
 # Alumni REST API Server 
-A REST API server built with Django REST framework for the Alumni of Bangladesh University of Professionals that allow its users to:
+A REST API server built with Django REST framework for the Alumni of Bangladesh University of Professionals that allows its' users to:
 
 - [x] Register & Login
 - [x] Create/Update/Delete profile
@@ -90,7 +90,7 @@ Request Body:
     "email": "sayem@gmail.com"
 }
 ```
-> The request will update the username and email of the specified user. Server will deny the request if the specified user is not same as the logged in user.
+> This request will update the username and email of the specified user. Server will deny the request if the specified user is not same as the logged in user.
 
 ##### Get profiles of all users
 ```http
@@ -115,7 +115,7 @@ Request Body:
     "passing_year": 2021
 }
 ```
-> The request will create the above profile for the logged in user.
+> This request will create the above profile for the logged in user.
 
 ##### Get profile of a user
 ```http
@@ -136,7 +136,7 @@ Request Body:
     "batch": 2018
 }
 ```
-> The request will update the roll and batch of the specified user. Server will deny the request if the specified user is not same as the logged in user.
+> This request will update the roll and batch of the specified user. Server will deny the request if the specified user is not same as the logged in user.
 
 ##### Delete profile of a user
 ```http
@@ -166,7 +166,7 @@ Request Body:
     "start_date": "2021-03-01"
 }
 ```
-> The request will create the above job description for the logged in user.
+> This request will create the above job description for the logged in user.
 ##### Get job description of a user
 ```http
 
@@ -185,7 +185,7 @@ Request Body:
     "start_date": "2021-04-01"
 }
 ```
-> The request will update the start_date of the specified user. Server will deny the request if the specified user is not same as the logged in user.
+> This request will update the start_date of the specified user. Server will deny the request if the specified user is not same as the logged in user.
 
 ##### Delete job description of a user
 ```http
@@ -216,7 +216,7 @@ Request Body:
     "github": "https://github.com/hmsayem"
 }
 ```
-> The request will create the above social links for the logged in user.
+> This request will create the above social links for the logged in user.
 
 
 ##### Get Social links of a user
@@ -238,7 +238,7 @@ Request Body:
     "linkedin": "https://www.linkedin.com/in/sayem",
 }
 ```
-> The request will update the facebook and linked in links of the specified user. Server will deny the request if the specified user is not same as the logged in user.
+> This request will update the facebook and linked in links of the specified user. Server will deny the request if the specified user is not same as the logged in user.
 
 ##### Delete Social links of a user
 ```http
@@ -268,7 +268,7 @@ Request Body:
     "category": "Dynamic Programming"
 }
 ```
-> The request will create the above blog post. Server will set the logged in user as the author of this blog post.
+> This request will create the above blog post. Server will set the logged in user as the author of this blog post.
 ##### Get blog post
 ```http
 
@@ -287,7 +287,7 @@ Request Body:
     "title": "Blog Post 2"
 }
 ```
-> The request will update the title of the specified blog post. Server will deny the request if the author of the blog post is not same as the logged in user.
+> This request will update the title of the specified blog post. Server will deny the request if the author of the blog post is not same as the logged in user.
 ##### Delete blog post
 ```http
 
@@ -302,4 +302,4 @@ DELETE /api/blog/post/${blog_id}/
 PUT /api/blog/like/${blog_id}/
 
 ```
-> The request will add a like to the specified blog post. If the post is already liked by the logged in user, the request will remove the like from it. 
+> This request will add a like to the specified blog post. If the post is already liked by the logged in user, the request will remove the like from it. 
